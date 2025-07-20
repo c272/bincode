@@ -20,8 +20,9 @@ use alloc::{
 #[cfg(target_has_atomic = "ptr")]
 use alloc::sync::Arc;
 
+/// Writer for writing to an arbitrary vector.
 #[derive(Default)]
-pub(crate) struct VecWriter {
+pub struct VecWriter {
     inner: Vec<u8>,
 }
 
@@ -32,9 +33,9 @@ impl VecWriter {
             inner: Vec::with_capacity(cap),
         }
     }
-    // May not be used in all feature combinations
+    /// May not be used in all feature combinations
     #[allow(dead_code)]
-    pub(crate) fn collect(self) -> Vec<u8> {
+    pub fn collect(self) -> Vec<u8> {
         self.inner
     }
 }

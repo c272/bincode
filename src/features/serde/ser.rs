@@ -8,6 +8,11 @@ use crate::{
 use alloc::vec::Vec;
 use serde::ser::*;
 
+/// Create a generic Serde serializer for the given encoder.
+pub fn serializer<'enc, ENC>(encoder: &'enc mut ENC) -> SerdeEncoder<'enc, ENC> where ENC: Encoder {
+    SerdeEncoder { enc: encoder }
+}
+
 /// Encode the given value into a `Vec<u8>` with the given `Config`. See the [config] module for more information.
 ///
 /// [config]: ../config/index.html
@@ -75,7 +80,8 @@ pub fn encode_into_std_write<E: Serialize, C: Config, W: std::io::Write>(
     Ok(encoder.into_writer().bytes_written())
 }
 
-pub(super) struct SerdeEncoder<'a, ENC: Encoder> {
+/// Generic serde serializer for bincode.
+pub struct SerdeEncoder<'a, ENC: Encoder> {
     pub(super) enc: &'a mut ENC,
 }
 
